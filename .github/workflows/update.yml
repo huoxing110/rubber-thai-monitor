@@ -1,0 +1,23 @@
+name: Daily Rubber Update
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run Build
+        run: python build.py
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
